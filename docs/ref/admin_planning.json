@@ -1,0 +1,252 @@
+{
+  "projectInfo": {
+    "name": "렌트카 관리자 시스템 (Admin Dashboard)",
+    "version": "1.0.0",
+    "target": "관리자, 직원",
+    "purpose": "차량 관리, 예약 관리, 상담 관리, 운영 관리"
+  },
+  "userRoles": {
+    "superAdmin": {
+      "name": "최고 관리자",
+      "permissions": ["모든 기능", "사용자 관리", "시스템 설정"]
+    },
+    "manager": {
+      "name": "매니저",
+      "permissions": ["차량 관리", "예약 관리", "상담 관리", "통계 조회"]
+    },
+    "staff": {
+      "name": "직원",
+      "permissions": ["예약 조회", "상담 응답", "차량 상태 업데이트"]
+    }
+  },
+  "dashboard": {
+    "url": "/admin",
+    "title": "대시보드",
+    "widgets": [
+      {
+        "name": "todayStats",
+        "title": "오늘 현황",
+        "data": ["신규 예약", "진행중 렌탈", "반납 예정", "문의 건수"],
+        "refreshInterval": "5분"
+      },
+      {
+        "name": "revenueChart",
+        "title": "매출 현황",
+        "data": ["일별", "주별", "월별"],
+        "chartType": "line"
+      },
+      {
+        "name": "vehicleStatus",
+        "title": "차량 현황",
+        "data": ["대여가능", "대여중", "정비중", "폐차예정"],
+        "chartType": "doughnut"
+      },
+      {
+        "name": "recentReservations",
+        "title": "최근 예약",
+        "data": ["예약 목록", "상태", "고객 정보"],
+        "limit": 10
+      },
+      {
+        "name": "pendingConsultations", 
+        "title": "대기중 상담",
+        "data": ["문의 목록", "우선순위", "처리 시간"],
+        "limit": 5
+      }
+    ]
+  },
+  "pages": {
+    "vehicleManagement": {
+      "url": "/admin/vehicles",
+      "title": "차량 관리",
+      "sections": [
+        {
+          "name": "vehicleList",
+          "components": ["차량 목록 테이블", "검색/필터", "페이지네이션"],
+          "features": [
+            "차량번호", "모델명", "상태", "위치", "마지막 점검일",
+            "총 대여횟수", "총 매출", "등록일"
+          ],
+          "actions": ["수정", "삭제", "상태변경", "이력조회"]
+        },
+        {
+          "name": "addVehicle",
+          "components": ["차량 등록 폼"],
+          "features": [
+            "기본정보": ["차량번호", "브랜드", "모델", "연식", "색상"],
+            "상세정보": ["연료타입", "승차인원", "변속기", "배기량"],
+            "가격정보": ["일일요금", "주간요금", "월간요금"],
+            "이미지": ["대표이미지", "상세이미지", "내부이미지"],
+            "옵션": ["네비게이션", "블랙박스", "후방카메라", "하이패스"],
+            "보험정보": ["보험사", "보험기간", "담당자"]
+          ]
+        },
+        {
+          "name": "vehicleStatus",
+          "components": ["실시간 차량 현황"],
+          "features": ["지도 뷰", "목록 뷰", "상태별 필터"]
+        }
+      ]
+    },
+    "reservationManagement": {
+      "url": "/admin/reservations", 
+      "title": "예약 관리",
+      "sections": [
+        {
+          "name": "reservationList",
+          "components": ["예약 목록 테이블"],
+          "features": [
+            "예약번호", "고객명", "연락처", "차량정보",
+            "대여일시", "반납일시", "상태", "결제상태", "총 금액"
+          ],
+          "filters": ["날짜범위", "상태", "차량", "고객"],
+          "actions": ["상세보기", "수정", "취소", "승인"]
+        },
+        {
+          "name": "reservationDetail",
+          "components": ["예약 상세 정보"],
+          "features": [
+            "고객정보": ["이름", "연락처", "면허증", "이메일"],
+            "차량정보": ["모델", "차량번호", "픽업장소", "반납장소"],
+            "결제정보": ["결제방법", "결제상태", "영수증"],
+            "추가서비스": ["보험", "네비", "카시트", "기타"],
+            "메모": ["관리자 메모", "고객 요청사항"]
+          ]
+        },
+        {
+          "name": "calendar",
+          "components": ["예약 캘린더"],
+          "features": ["월간뷰", "주간뷰", "일간뷰", "차량별 뷰"]
+        }
+      ]
+    },
+    "consultationManagement": {
+      "url": "/admin/consultations",
+      "title": "상담 관리", 
+      "sections": [
+        {
+          "name": "consultationList",
+          "components": ["상담 목록 테이블"],
+          "features": [
+            "문의번호", "고객명", "연락처", "문의유형",
+            "제목", "등록일시", "상태", "담당자", "처리일시"
+          ],
+          "filters": ["날짜범위", "상태", "문의유형", "담당자"],
+          "actions": ["답변", "처리완료", "보류", "삭제"]
+        },
+        {
+          "name": "consultationDetail",
+          "components": ["상담 상세 및 답변"],
+          "features": [
+            "문의내용": ["고객정보", "문의유형", "상세내용"],
+            "답변관리": ["답변작성", "답변이력", "처리상태"],
+            "알림설정": ["SMS 발송", "이메일 발송", "카카오톡"]
+          ]
+        },
+        {
+          "name": "autoResponse",
+          "components": ["자동 응답 설정"],
+          "features": ["FAQ 연결", "템플릿 관리", "키워드 설정"]
+        }
+      ]
+    },
+    "customerManagement": {
+      "url": "/admin/customers",
+      "title": "고객 관리",
+      "sections": [
+        {
+          "name": "customerList",
+          "components": ["고객 목록"],
+          "features": [
+            "고객명", "연락처", "이메일", "등급",
+            "가입일", "최근이용일", "총이용횟수", "총결제금액"
+          ]
+        },
+        {
+          "name": "customerDetail",
+          "components": ["고객 상세 정보"],
+          "features": ["기본정보", "예약이력", "결제이력", "상담이력", "블랙리스트"]
+        }
+      ]
+    },
+    "statistics": {
+      "url": "/admin/statistics",
+      "title": "통계 및 분석",
+      "sections": [
+        {
+          "name": "salesStats",
+          "components": ["매출 통계"],
+          "features": ["일별", "월별", "분기별", "연별", "차량별", "지역별"]
+        },
+        {
+          "name": "vehicleStats", 
+          "components": ["차량 이용률"],
+          "features": ["차량별 가동률", "인기 차종", "지역별 선호도"]
+        },
+        {
+          "name": "customerStats",
+          "components": ["고객 분석"],
+          "features": ["신규고객", "재이용률", "고객만족도", "연령대별"]
+        }
+      ]
+    },
+    "systemSettings": {
+      "url": "/admin/settings",
+      "title": "시스템 설정",
+      "sections": [
+        {
+          "name": "siteSettings",
+          "components": ["사이트 기본 설정"],
+          "features": ["사이트명", "로고", "연락처", "주소", "영업시간"]
+        },
+        {
+          "name": "priceSettings",
+          "components": ["요금 설정"],
+          "features": ["기본요금", "할인정책", "성수기요금", "추가서비스요금"]
+        },
+        {
+          "name": "notificationSettings",
+          "components": ["알림 설정"],
+          "features": ["SMS 설정", "이메일 설정", "푸시알림", "자동알림"]
+        },
+        {
+          "name": "userManagement",
+          "components": ["관리자 계정 관리"],
+          "features": ["계정생성", "권한설정", "로그인이력", "비밀번호정책"]
+        }
+      ]
+    }
+  },
+  "features": {
+    "authentication": {
+      "login": ["아이디/비밀번호", "2단계 인증", "세션 타임아웃"],
+      "authorization": ["역할별 권한", "메뉴별 접근제어", "API 권한"]
+    },
+    "dataManagement": {
+      "crud": ["생성", "조회", "수정", "삭제"],
+      "import": ["Excel 업로드", "CSV 업로드", "데이터 검증"],
+      "export": ["Excel 다운로드", "PDF 리포트", "데이터 백업"]
+    },
+    "notification": {
+      "realtime": ["실시간 알림", "브라우저 푸시"],
+      "scheduled": ["정기 리포트", "리마인더"],
+      "channels": ["이메일", "SMS", "관리자 알림"]
+    },
+    "monitoring": {
+      "system": ["서버 상태", "DB 상태", "에러 로그"],
+      "business": ["예약 현황", "매출 현황", "고객 활동"]
+    }
+  },
+  "security": {
+    "dataProtection": ["개인정보 암호화", "결제정보 보안", "접근 로그"],
+    "accessControl": ["IP 제한", "시간대별 접근", "실패 시도 차단"],
+    "backup": ["일일 백업", "주간 백업", "재해 복구"]
+  },
+  "integration": {
+    "payment": ["PG사 연동", "정산 시스템"],
+    "sms": ["SMS 발송 서비스"],
+    "email": ["이메일 발송 서비스"],
+    "map": ["지도 API", "위치 추적"],
+    "external": ["보험사 API", "차량 관제 시스템"]
+  }
+}
