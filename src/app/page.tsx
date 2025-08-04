@@ -7,7 +7,7 @@ import { VehicleSection } from '@/components/layout/VehicleSection';
 import { ReviewSection } from '@/components/layout/ReviewSection';
 import { ConsultationBanner } from '@/components/layout/ConsultationBanner';
 import { ContactSection } from '@/components/layout/ContactSection';
-import { FloatingButtons } from '@/components/ui';
+import { QuickMenu } from '@/components/ui';
 
 export default function Home() {
   return (
@@ -18,7 +18,7 @@ export default function Home() {
       <ReviewSection />
       <ConsultationBanner />
       <ContactSection />
-      <FloatingButtons />
+      <QuickMenu />
     </ThemeLayout>
   );
 }
