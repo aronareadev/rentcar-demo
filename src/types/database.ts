@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       consultations: {
         Row: {
+          admin_memo: string | null
           consultation_number: string
           content: string
           created_at: string | null
@@ -23,13 +24,18 @@ export type Database = {
           customer_name: string
           customer_phone: string
           id: string
+          is_read: boolean | null
+          preferred_vehicle: string | null
           priority: string | null
+          rental_end_date: string | null
+          rental_start_date: string | null
           status: string | null
           subject: string
           type: string | null
           updated_at: string | null
         }
         Insert: {
+          admin_memo?: string | null
           consultation_number: string
           content: string
           created_at?: string | null
@@ -37,13 +43,18 @@ export type Database = {
           customer_name: string
           customer_phone: string
           id?: string
+          is_read?: boolean | null
+          preferred_vehicle?: string | null
           priority?: string | null
+          rental_end_date?: string | null
+          rental_start_date?: string | null
           status?: string | null
           subject: string
           type?: string | null
           updated_at?: string | null
         }
         Update: {
+          admin_memo?: string | null
           consultation_number?: string
           content?: string
           created_at?: string | null
@@ -51,7 +62,11 @@ export type Database = {
           customer_name?: string
           customer_phone?: string
           id?: string
+          is_read?: boolean | null
+          preferred_vehicle?: string | null
           priority?: string | null
+          rental_end_date?: string | null
+          rental_start_date?: string | null
           status?: string | null
           subject?: string
           type?: string | null
@@ -174,28 +189,37 @@ export type Database = {
         Row: {
           country: string | null
           created_at: string | null
+          description: string | null
+          display_order: number | null
           id: string
           is_active: boolean | null
           logo_url: string | null
           name: string
+          name_en: string | null
           updated_at: string | null
         }
         Insert: {
           country?: string | null
           created_at?: string | null
+          description?: string | null
+          display_order?: number | null
           id?: string
           is_active?: boolean | null
           logo_url?: string | null
           name: string
+          name_en?: string | null
           updated_at?: string | null
         }
         Update: {
           country?: string | null
           created_at?: string | null
+          description?: string | null
+          display_order?: number | null
           id?: string
           is_active?: boolean | null
           logo_url?: string | null
           name?: string
+          name_en?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -269,10 +293,66 @@ export type Database = {
         }
         Relationships: []
       }
-      vehicles: {
+      vehicle_models: {
         Row: {
           brand: string
           category: string | null
+          created_at: string | null
+          displacement: number | null
+          estimated_daily_rate: number
+          features: Json | null
+          fuel_type: string
+          id: string
+          image: Json | null
+          is_active: boolean
+          model: string
+          passengers: number
+          transmission: string
+          updated_at: string | null
+          year: number
+        }
+        Insert: {
+          brand: string
+          category?: string | null
+          created_at?: string | null
+          displacement?: number | null
+          estimated_daily_rate?: number
+          features?: Json | null
+          fuel_type?: string
+          id?: string
+          image?: Json | null
+          is_active?: boolean
+          model: string
+          passengers?: number
+          transmission?: string
+          updated_at?: string | null
+          year?: number
+        }
+        Update: {
+          brand?: string
+          category?: string | null
+          created_at?: string | null
+          displacement?: number | null
+          estimated_daily_rate?: number
+          features?: Json | null
+          fuel_type?: string
+          id?: string
+          image?: Json | null
+          is_active?: boolean
+          model?: string
+          passengers?: number
+          transmission?: string
+          updated_at?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
+      vehicles: {
+        Row: {
+          brand: string
+          brand_id: string | null
+          category: string | null
+          category_id: string | null
           color: string | null
           created_at: string | null
           daily_rate: number
@@ -284,6 +364,7 @@ export type Database = {
           insurance: Json | null
           last_inspection_date: string | null
           location: string | null
+          location_id: string | null
           mileage: number | null
           model: string
           monthly_rate: number | null
@@ -299,7 +380,9 @@ export type Database = {
         }
         Insert: {
           brand: string
+          brand_id?: string | null
           category?: string | null
+          category_id?: string | null
           color?: string | null
           created_at?: string | null
           daily_rate: number
@@ -311,6 +394,7 @@ export type Database = {
           insurance?: Json | null
           last_inspection_date?: string | null
           location?: string | null
+          location_id?: string | null
           mileage?: number | null
           model: string
           monthly_rate?: number | null
@@ -326,7 +410,9 @@ export type Database = {
         }
         Update: {
           brand?: string
+          brand_id?: string | null
           category?: string | null
+          category_id?: string | null
           color?: string | null
           created_at?: string | null
           daily_rate?: number
@@ -338,6 +424,7 @@ export type Database = {
           insurance?: Json | null
           last_inspection_date?: string | null
           location?: string | null
+          location_id?: string | null
           mileage?: number | null
           model?: string
           monthly_rate?: number | null
@@ -351,7 +438,29 @@ export type Database = {
           weekly_rate?: number | null
           year?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_vehicles_brand"
+            columns: ["brand_id"]
+            isOneToOne: false
+            referencedRelation: "vehicle_brands"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_vehicles_category"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "vehicle_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_vehicles_location"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "vehicle_locations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

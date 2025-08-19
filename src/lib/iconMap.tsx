@@ -16,8 +16,16 @@ import {
   X,
   ChevronRight,
   ChevronLeft,
+  ChevronUp,
+  ChevronDown,
   Check,
   AlertCircle,
+  Tag,
+  List,
+  Grid3X3,
+  Info,
+  Play,
+  Pause,
   type LucideIcon
 } from 'lucide-react';
 
@@ -40,8 +48,16 @@ const iconMap: Record<string, LucideIcon> = {
   'x': X,
   'chevron-right': ChevronRight,
   'chevron-left': ChevronLeft,
+  'chevron-up': ChevronUp,
+  'chevron-down': ChevronDown,
   'check': Check,
   'alert-circle': AlertCircle,
+  'tag': Tag,
+  'list': List,
+  'grid': Grid3X3,
+  'info': Info,
+  'play': Play,
+  'pause': Pause,
 };
 
 interface IconProps {
@@ -59,7 +75,7 @@ export const DynamicIcon: React.FC<IconProps> = ({
   
   if (!IconComponent) {
     // 기본 아이콘이나 경고 표시
-    console.warn(`Icon "${name}" not found in iconMap`);
+    console.warn(`Icon "${name}" not found in iconMap. Available icons:`, Object.keys(iconMap));
     return <AlertCircle className={className} size={size} />;
   }
   

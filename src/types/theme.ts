@@ -19,7 +19,7 @@ export interface ContactInfo {
 }
 
 export interface SearchField {
-  type: 'select' | 'text' | 'tel' | 'email' | 'textarea';
+  type: 'select' | 'text' | 'tel' | 'email' | 'textarea' | 'date';
   placeholder: string;
   options?: string[];
   required?: boolean;

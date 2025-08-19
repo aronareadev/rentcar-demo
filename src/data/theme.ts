@@ -19,6 +19,7 @@ export const rentCarTheme: RentCarTheme = {
       { "title": "렌트카 안내", "link": "/guide" },
       { "title": "실시간 예약", "link": "/booking" },
       { "title": "차량정보", "link": "/vehicles" },
+      { "title": "예약조회", "link": "/booking-history" },
       { "title": "고객센터", "link": "/support" }
     ],
     "contact": {
@@ -164,9 +165,8 @@ export const rentCarTheme: RentCarTheme = {
     "backgroundImage": "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1920&h=1080&fit=crop",
     "form": {
       "fields": [
-        { "type": "text", "placeholder": "성함", "required": true },
+        { "type": "text", "placeholder": "이름", "required": true },
         { "type": "tel", "placeholder": "연락처", "required": true },
-        { "type": "email", "placeholder": "이메일", "required": false },
         { "type": "textarea", "placeholder": "문의내용", "required": true }
       ],
       "submitText": "빠른상담신청"
