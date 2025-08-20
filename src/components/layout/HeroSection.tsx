@@ -1,28 +1,93 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui';
 import { DynamicIcon } from '@/lib/iconMap';
 import { useTheme } from '@/lib/ThemeContext';
 import { SearchField } from '@/types/theme';
+import { getVehicleCategories, getVehicleLocations } from '@/lib/vehicleService';
 
 export const HeroSection = () => {
   const { theme } = useTheme();
   const { hero } = theme;
+  const router = useRouter();
   const [formData, setFormData] = useState<Record<string, string>>({});
+  const [categories, setCategories] = useState<string[]>([]);
+  const [locations, setLocations] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // DB에서 카테고리와 지역 데이터 로드
+  useEffect(() => {
+    const loadSearchOptions = async () => {
+      try {
+        setLoading(true);
+        
+        // 카테고리 데이터 로드
+        try {
+          const categoriesData = await getVehicleCategories();
+          const categoryNames = categoriesData.map(cat => cat.name);
+          setCategories(categoryNames);
+        } catch (error) {
+          console.warn('카테고리 로드 실패, 기본값 사용:', error);
+          setCategories(['SUV', '경차', '대형세단', '소형', '승합차', '전기차', '중형세단']);
+        }
+
+        // 지역 데이터 로드
+        try {
+          const locationsData = await getVehicleLocations();
+          const locationNames = locationsData.map(loc => loc.name);
+          setLocations(locationNames);
+        } catch (error) {
+          console.warn('지역 로드 실패, 기본값 사용:', error);
+          setLocations(['강남점', '본점', '부산점', '대구점', '홍대점']);
+        }
+        
+      } catch (error) {
+        console.error('검색 옵션 로드 실패:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSearchOptions();
+  }, []);
 
   const handleFieldChange = (placeholder: string, value: string) => {
     setFormData(prev => ({ ...prev, [placeholder]: value }));
   };
 
   const handleSearch = () => {
-    console.log('Search data:', formData);
-    // 검색 로직 구현
+    const selectedCategory = formData['차종 선택'];
+    const selectedLocation = formData['지역'];
+    
+    // URL 파라미터 구성
+    const params = new URLSearchParams();
+    if (selectedCategory) {
+      params.append('category', selectedCategory);
+    }
+    if (selectedLocation) {
+      params.append('location', selectedLocation);
+    }
+    
+    // 차량정보 페이지로 이동 (필터 선택된 상태)
+    const url = `/vehicles${params.toString() ? `?${params.toString()}` : ''}`;
+    router.push(url);
   };
 
   const renderField = (field: SearchField, index: number) => {
     const commonClasses = "w-full px-4 py-3 border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent bg-white text-gray-900";
+    
+    // 실제 DB 데이터로 옵션 교체
+    let options: string[] = [];
+    if (field.placeholder === '차종 선택') {
+      options = categories;
+    } else if (field.placeholder === '지역') {
+      options = locations;
+    } else {
+      options = field.options || [];
+    }
     
     switch (field.type) {
       case 'select':
@@ -32,9 +97,10 @@ export const HeroSection = () => {
             className={commonClasses}
             value={formData[field.placeholder] || ''}
             onChange={(e) => handleFieldChange(field.placeholder, e.target.value)}
+            disabled={loading}
           >
-            <option value="">{field.placeholder}</option>
-            {field.options?.map((option) => (
+            <option value="">{loading ? '로딩 중...' : field.placeholder}</option>
+            {options.map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
@@ -51,6 +117,7 @@ export const HeroSection = () => {
             value={formData[field.placeholder] || ''}
             onChange={(e) => handleFieldChange(field.placeholder, e.target.value)}
             required={field.required}
+            disabled={loading}
           />
         );
       default:
@@ -63,6 +130,7 @@ export const HeroSection = () => {
             value={formData[field.placeholder] || ''}
             onChange={(e) => handleFieldChange(field.placeholder, e.target.value)}
             required={field.required}
+            disabled={loading}
           />
         );
     }
@@ -125,10 +193,11 @@ export const HeroSection = () => {
                 ))}
                 <div className="flex items-end">
                   <button 
-                    className="w-full py-3 text-lg font-semibold bg-primary hover:bg-primary/90 text-white transition-colors"
+                    className="w-full py-3 text-lg font-semibold bg-primary hover:bg-primary/90 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={handleSearch}
+                    disabled={loading}
                   >
-                    {hero.searchForm.buttonText}
+                    {loading ? '로딩 중...' : hero.searchForm.buttonText}
                   </button>
                 </div>
               </div>

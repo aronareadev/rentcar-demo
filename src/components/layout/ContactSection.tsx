@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Button } from '@/components/ui';
+import { DynamicIcon } from '@/lib/iconMap';
 import { useTheme } from '@/lib/ThemeContext';
 import { SearchField } from '@/types/theme';
 import { X, Shield, CheckCircle, XCircle } from 'lucide-react';
@@ -74,7 +75,7 @@ export const ContactSection = () => {
   };
 
   const renderField = (field: SearchField, index: number) => {
-    const commonClasses = "w-full px-4 py-3 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-gray-800 text-white placeholder-gray-400";
+    const commonClasses = "w-full px-5 py-4 border border-gray-500/30 rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary bg-gray-800/50 backdrop-blur-sm text-white placeholder-gray-400 transition-all duration-300 hover:border-gray-400/50";
     
     switch (field.type) {
       case 'textarea':
@@ -83,7 +84,7 @@ export const ContactSection = () => {
             key={index}
             className={`${commonClasses} resize-none`}
             placeholder={field.placeholder}
-            rows={4}
+            rows={5}
             value={formData[field.placeholder] || ''}
             onChange={(e) => handleFieldChange(field.placeholder, e.target.value)}
             required={field.required}
@@ -147,23 +148,23 @@ export const ContactSection = () => {
               ))}
               
               {/* 개인정보 수집 이용동의 체크박스 */}
-              <div className="flex items-start space-x-3 py-4">
-                <div className="flex items-center">
+              <div className="flex items-start space-x-4 py-6 bg-gray-800/30 rounded-xl px-5 border border-gray-600/20">
+                <div className="flex items-center pt-1">
                   <input
                     type="checkbox"
                     id="privacy-agreement"
                     checked={privacyAgreed}
                     onChange={(e) => setPrivacyAgreed(e.target.checked)}
-                    className="w-5 h-5 text-primary bg-gray-800 border-gray-600 rounded focus:ring-primary focus:ring-2"
+                    className="w-5 h-5 text-primary bg-gray-700 border-gray-500 rounded focus:ring-primary focus:ring-2 transition-colors"
                   />
                 </div>
                 <div className="flex-1">
-                  <label htmlFor="privacy-agreement" className="text-sm text-gray-300">
+                  <label htmlFor="privacy-agreement" className="text-sm text-gray-300 leading-relaxed cursor-pointer">
                     <span className="text-red-400">*</span> 개인정보 수집 및 이용에 동의합니다.{' '}
                     <button
                       type="button"
                       onClick={() => setShowPrivacyModal(true)}
-                      className="text-primary underline hover:text-primary/80 transition-colors"
+                      className="text-primary underline hover:text-primary/80 transition-colors font-medium"
                     >
                       [내용 보기]
                     </button>
@@ -174,13 +175,29 @@ export const ContactSection = () => {
               <Button 
                 type="submit"
                 disabled={!privacyAgreed || isSubmitting}
-                className={`w-full py-4 text-lg font-semibold transition-all ${
+                className={`w-full py-5 text-lg font-semibold rounded-xl transition-all duration-300 transform ${
                   privacyAgreed && !isSubmitting
-                    ? 'bg-primary hover:bg-primary/90' 
+                    ? 'bg-primary hover:bg-primary/90 hover:scale-105 shadow-lg hover:shadow-xl' 
                     : 'bg-gray-600 cursor-not-allowed opacity-50'
                 }`}
               >
-                {isSubmitting ? '전송 중...' : contactSection.form.submitText}
+                <span className="flex items-center justify-center gap-2">
+                  {isSubmitting ? (
+                    <>
+                      <motion.div
+                        className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      />
+                      전송 중...
+                    </>
+                  ) : (
+                    <>
+                      {contactSection.form.submitText}
+                      <DynamicIcon name="send" className="w-5 h-5" />
+                    </>
+                  )}
+                </span>
               </Button>
             </form>
           </motion.div>

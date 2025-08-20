@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "13.0.4"
@@ -121,48 +121,81 @@ export type Database = {
       }
       reservations: {
         Row: {
+          admin_notes: string | null
+          approved_at: string | null
+          approved_by: string | null
           created_at: string | null
           customer_id: string | null
           end_date: string
+          end_time: string | null
+          guest_email: string | null
+          guest_name: string | null
+          guest_phone: string | null
           id: string
+          notes: string | null
           paid_amount: number | null
           payment_status: string | null
-          pickup_location: string
+          pickup_location_id: string | null
+          pickup_location_old: string
           reservation_number: string
-          return_location: string
+          return_location_id: string | null
+          return_location_old: string
           start_date: string
+          start_time: string | null
           status: string | null
           total_amount: number
           updated_at: string | null
           vehicle_id: string | null
         }
         Insert: {
+          admin_notes?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
           created_at?: string | null
           customer_id?: string | null
           end_date: string
+          end_time?: string | null
+          guest_email?: string | null
+          guest_name?: string | null
+          guest_phone?: string | null
           id?: string
+          notes?: string | null
           paid_amount?: number | null
           payment_status?: string | null
-          pickup_location: string
+          pickup_location_id?: string | null
+          pickup_location_old: string
           reservation_number: string
-          return_location: string
+          return_location_id?: string | null
+          return_location_old: string
           start_date: string
+          start_time?: string | null
           status?: string | null
           total_amount: number
           updated_at?: string | null
           vehicle_id?: string | null
         }
         Update: {
+          admin_notes?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
           created_at?: string | null
           customer_id?: string | null
           end_date?: string
+          end_time?: string | null
+          guest_email?: string | null
+          guest_name?: string | null
+          guest_phone?: string | null
           id?: string
+          notes?: string | null
           paid_amount?: number | null
           payment_status?: string | null
-          pickup_location?: string
+          pickup_location_id?: string | null
+          pickup_location_old?: string
           reservation_number?: string
-          return_location?: string
+          return_location_id?: string | null
+          return_location_old?: string
           start_date?: string
+          start_time?: string | null
           status?: string | null
           total_amount?: number
           updated_at?: string | null
@@ -174,6 +207,20 @@ export type Database = {
             columns: ["customer_id"]
             isOneToOne: false
             referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_pickup_location_id_fkey"
+            columns: ["pickup_location_id"]
+            isOneToOne: false
+            referencedRelation: "vehicle_locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_return_location_id_fkey"
+            columns: ["return_location_id"]
+            isOneToOne: false
+            referencedRelation: "vehicle_locations"
             referencedColumns: ["id"]
           },
           {

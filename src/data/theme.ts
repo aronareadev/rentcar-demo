@@ -1,7 +1,7 @@
 import { RentCarTheme } from '@/types/theme';
 
 export const rentCarTheme: RentCarTheme = {
-  "siteName": "SAMPLE RENTCAR",
+  "siteName": "EVER RENTCAR",
   "tagline": "신뢰할 수 있는 렌트카 서비스",
   "phoneNumber": "1544-5678",
   "theme": {
@@ -29,7 +29,7 @@ export const rentCarTheme: RentCarTheme = {
   },
   "hero": {
     "backgroundImage": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&h=1080&fit=crop",
-    "title": "SAMPLE RENTCAR",
+    "title": "EVER RENTCAR",
     "subtitle": "신뢰할 수 있는 렌트카 서비스를 경험하세요",
     "searchForm": {
       "title": "QUICK CARS SEARCH",

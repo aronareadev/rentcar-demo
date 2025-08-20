@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gsap scroll trigger – single file</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+    body,html {height:100%;margin:0;padding:0}
+    ul, li, dl, dt, dd, p, span{margin:0;padding:0}
+    a{text-decoration:none}
+    li{list-style:none}
+    a{text-decoration:none}
+    *, :after, :before{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
+    :root{--primary:#44b9cd}
+    .wrap{height:200vh;background:#222}
+    #inc03{position:relative;height:100vh;font-size:16px;color:#777;line-height:1.8;letter-spacing:-.3px;font-family: 'Pretendard'} 
+    #inc03 .tit_area{position:relative;max-width:1600px;margin:0 auto 100px;padding-top:12vh}
+    #inc03 .tit_area .tit{font-size:52px;color:#222;font-weight:700;font-family:"Lexend"}
+    #inc03 .tit_area .tit span{color:var(--primary)}
+    #inc03 .tit_area .txt{font-size:18px;color:#777;white-space:pre-line}
+    #inc03 .img_slide_wrap{padding-bottom:30px}
+    #inc03 ul {display:flex;flex-wrap:nowrap;padding-left:calc((100% - 1600px) / 2)}
+    #inc03 ul li{transition:all .3s}
+    #inc03 ul li+li{margin-left:175px}
+    #inc03 ul li:nth-child(odd) a{width:750px;height:52vh}
+    #inc03 ul li:nth-child(even){margin-top:-150px}
+    #inc03 ul li:nth-child(even) a{width:445px;height:55vh}
+    #inc03 ul li:hover{transform:translate(-10px,-10px)}
+    #inc03 ul li a{display:block;position:relative;box-shadow:25px 25px 50px rgba(0,0,0,.15);transition:all .3s}
+    #inc03 ul li a:after{display:block;content:"";position:absolute;left:0;top:0;z-index:1;width:100%;height:100%;background:rgb(1,1,1);background:linear-gradient(0deg, rgba(1,1,1,.5) 0%, rgba(0,0,0,0) 60%);transition:all .25s}
+    #inc03 ul li a:hover{box-shadow:25px 25px 35px rgba(0,0,0,.2)}
+    #inc03 ul li .txt{position:absolute;bottom:0;z-index:2;width:100%;padding:0 0 60px 55px;font-size:16px;font-weight:500;color:#fff}
+    #inc03 ul li .txt p{margin-bottom:10px;font-size:28px;font-weight:700}
+    #inc03 ul li .txt div{white-space:pre-line}
+    #inc03 ul li img{width:100%;height:100%;object-fit:cover}
+    #inc03 .bg{position:absolute;bottom:0;width:100%;z-index:-1}
+    #inc03 .bg .flow_txt{position:relative;z-index:-2;opacity:0.15;font-size:190px;font-weight:700;color:var(--primary);line-height:0.65;white-space:nowrap;animation:flow 30s linear infinite;font-family:"Lexend"}
+    @keyframes flow {from {transform:translateX(0)} to {transform:translateX(-50%)}}
+    #inc03 .bg .box{width:100%;height:30vh;background:rgb(68,185,205);background:linear-gradient(90deg, rgba(68,185,205,1) 48%, rgba(255,255,255,1) 94%)}
+  </style>
+</head>
+<body>
+  <article id="inc03">
+    <div class="tit_area" data-aos="fade-right">
+      <p class="tit">Sample <span>Clinic</span></p>
+      <p class="txt">반려동물 맞춤형 진료와 친절한 상담으로
+      전문의와 함께 안전하고 편안한 진료를 약속드립니다.</p>
+    </div>
+    <div class="img_slide_wrap">
+      <ul class="img_slide">
+        <li>
+          <a href="#">
+            <img src="https://hos1034.shiningcorp.com/sh_img/include/inc03/img/img01.jpg" alt="외과/수술">
+            <div class="txt">
+              <p>외과/수술</p>
+              <div>외과 담당 전문의와 수술 장비를 갖추고 있으며, 
+                다양한 모니터링 장비를 보유하고 있습니다.</div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <img src="https://hos1034.shiningcorp.com/sh_img/include/inc03/img/img02.jpg" alt="내과">
+            <div class="txt">
+              <p>내과</p>
+              <div>소화기, 호흡기, 순환계 등 관련 질병을 조기에
+                발견하고 치료하는것이 중요합니다.</div>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <img src="https://hos1034.shiningcorp.com/sh_img/include/inc03/img/img03.jpg" alt="영상의학과">
+            <div class="txt">
+              <p>영상의학과</p>
+              <div>건강 문제를 진단하고 치료하기 위해 
+                다양한 영상 진단 기술을 보유하고 있습니다.</div>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="bg">
+      <p class="flow_txt">Expert Care for Your Furry Friends</p>
+      <p class="box"></p>
+    </div>
+  </article>
+  <div class="wrap"></div>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+    const pinnedImageWrappers = document.querySelectorAll('#inc03');
+    if (pinnedImageWrappers) {
+      pinnedImageWrappers.forEach((wrapper) => {
+        const inner = wrapper.querySelector('#inc03 .img_slide');
+        gsap.to(inner, {
+          x: () => -(inner.scrollWidth - document.documentElement.clientWidth) + 'px',
+          ease: 'none',
+          scrollTrigger: {
+            start: 'top',
+            trigger: wrapper,
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+            end: () => `+=${inner.offsetWidth}`
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>

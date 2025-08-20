@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Swiper Creative – Single File</title>
+  <!-- fonts -->
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Notable&display=swap" rel="stylesheet">
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+  <style>
+    body,html {height:100%;margin:0;padding:0}
+    ul, li, dl, dt, dd, p, span{margin:0;padding:0}
+    a{text-decoration:none}
+    li{list-style:none}
+    *, :after, :before{box-sizing:border-box}
+
+    :root{--ani:cubic-bezier(.32,.94,.6,1);--k-font:'Pretendard';--e-font:'Italiana'}
+    #atc01{overflow:hidden;position:relative;z-index:2;padding:50px 50px 180px;font-size:15px;line-height:1.8;color:#111;font-family:var(--e-font), var(--k-font)}
+    #atc01 .bg{display:block;width:130%;height:400px;position:absolute;bottom:0;left:-15%;border-radius:100%;background-color:#fff;transition:transform .6s var(--ani)}
+    #atc01 .inner{display:flex;align-items:center;position:relative;width:1320px;margin:0 auto;padding-top:120px}
+    #atc01 .inner:after{display:block;content:"";visibility:hidden;clear:both}
+
+    /* 텍스트 */
+    #atc01 .txt_area{position:relative;z-index:2;transform:translateY(-60px);width:50%}
+    #atc01 .txt_area .stxt{font-weight:bold}
+    #atc01 .txt_area .btxt{margin:50px 0 60px;font-size:97px;line-height:1.1}
+    #atc01 .txt_area .btxt span{padding-left:100px}
+    #atc01 .txt_area .btxt b{font-size:77px;font-weight:normal;font-family:'Notable','notokr-bold'}
+    #atc01 .txt_area .stxt2{padding-left:220px;font-weight:bold;letter-spacing:.3px}
+    #atc01 .view_btn{display:inline-block;position:relative;margin-top:60px;text-align:center;line-height:105px}
+    #atc01 .view_btn svg{position:relative;color:#fff}
+    #atc01 .view_btn:before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:105px;height:105px;border-radius:50%;background-color:#111;box-shadow:20px 20px 40px rgba(0,0,0,.25);transition:all .3s var(--ani)}
+    #atc01 .view_btn:hover:before{width:95px;height:95px;box-shadow:20px 20px 30px rgba(0,0,0,.3)}
+    #atc01 .view_btn.animated{transform:translateX(-80px);animation-delay:.4s}
+
+    /* pager */
+    #atc01 .pager_dot{margin-top:50px;padding-right:90px;text-align:right}
+    #atc01 .pager_dot .bullet{display:inline-block;opacity:1;vertical-align:middle;width:6px;height:6px;border-radius:50%;background-color:#111;cursor:pointer;transition:all .2s var(--ani)}
+    #atc01 .pager_dot span+span{margin-left:12px}
+    #atc01 .pager_dot span.active{width:14px;height:14px}
+
+    /* 이미지 */
+    #atc01 .slide{position:relative;z-index:1;transform:translateY(80px);width:50%;margin-left:-90px}
+    #atc01 .slide li{overflow:visible;width:400px;height:800px;text-align:center;color:#fff;transition-timing-function:var(--ani)}
+    #atc01 .slide li .img{overflow:hidden;border-radius:26px;background-color:#000;transition:all .2s}
+    #atc01 .slide li .img img{opacity:.7;transition:all .2s}
+    #atc01 .slide .swiper-slide-active .img{box-shadow:34px 34px 60px rgba(0,0,0,.25)}
+    #atc01 .slide .swiper-slide-active .img img{opacity:1}
+
+    /* 반응형 */
+    @media (max-width:1500px){
+      #atc01 .inner{width:100%}
+      #atc01 .txt_area{width:40%}
+      #atc01 .txt_area .btxt{text-align:center;font-size:57px}
+      #atc01 .txt_area .btxt b{font-size:57px}
+      #atc01 .txt_area .btxt span{padding-left:0}
+      #atc01 .txt_area .stxt2{padding-left:0;text-align:center}
+      #atc01 .pager_dot{text-align:center;padding-right:0}
+      #atc01 .slide{width:60%;margin-left:-120px}
+      #atc01 .slide li{width:350px;height:600px}
+      #atc01 .slide li .img{height:100%}
+      #atc01 .view_btn:before{width:65px;height:65px}
+      #atc01 .view_btn:hover:before{width:65px;height:65px}
+    }
+    @media (max-width:1024px){
+      #atc01{padding:50px 30px 100px}
+      #atc01 .slide{margin-left:-80px}
+      #atc01 .slide li{width:250px;height:450px}
+      #atc01 .slide li .img img{width:100%}
+      #atc01 .inner{padding-top:40px}
+      #atc01 .txt_area .btxt{margin:40px 0 50px;font-size:47px}
+      #atc01 .txt_area .btxt b{font-size:47px}
+      #atc01 .view_btn svg{width:20px;height:20px} 
+    }
+    @media (max-width:768px){
+      #atc01{text-align:center}
+      #atc01 .inner{flex-direction:column}
+      #atc01 .txt_area,#atc01 .slide{width:100%;margin-left:0}
+      #atc01 .txt_area .btxt{margin:30px 0 40px}
+      #atc01 .view_btn{line-height:45px;margin-top:40px}
+      #atc01 .view_btn:before{width:45px;height:45px}
+      #atc01 .view_btn:hover:before{width:45px;height:45px}
+      #atc01 .pager_dot{margin:40px 0 0}
+    }
+    @media (max-width:480px){
+      #atc01{padding:30px 30px 80px}
+      #atc01 .inner{padding-top:30px}
+      #atc01 .txt_area .btxt{margin:30px;font-size:33px}
+      #atc01 .txt_area .btxt b{display:block;font-size:33px}
+      #atc01 .view_btn{margin-top:35px}
+      #atc01 .slide li{width:170px;height:300px}
+    }
+  </style>
+</head>
+<body>
+  <article id="atc01">
+    <div id="oval1" class="bg"></div>
+    <div class="inner">
+      <div class="txt_area">
+        <span class="stxt">(FEATURED)</span>
+        <p class="btxt">
+          Collecting<br />
+          <span>Digital <b>Art</b></span>
+        </p>
+        <div class="stxt2">
+          <p>Buy and sell NFT’s from the<br />world’s top artists.</p>
+          <a class="view_btn" href="/">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+        <div class="pager_dot"></div>
+      </div>
+
+      <div class="slide swiper-container">
+        <ul class="swiper-wrapper">
+          <li class="swiper-slide"><div class="img"><img src="https://co1094-res.shiningcorp.com/sh_img/include/inc01/img01.jpg" alt="image" /></div></li>
+          <li class="swiper-slide"><div class="img"><img src="https://co1094-res.shiningcorp.com/sh_img/include/inc01/img02.jpg" alt="image" /></div></li>
+          <li class="swiper-slide"><div class="img"><img src="https://co1094-res.shiningcorp.com/sh_img/include/inc01/img03.jpg" alt="image" /></div></li>
+          <li class="swiper-slide"><div class="img"><img src="https://co1094-res.shiningcorp.com/sh_img/include/inc01/img04.jpg" alt="image" /></div></li>
+          <li class="swiper-slide"><div class="img"><img src="https://co1094-res.shiningcorp.com/sh_img/include/inc01/img05.jpg" alt="image" /></div></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script>
+    var atc01Swiper = new Swiper("#atc01 .slide", {
+      effect: "creative",
+      loop: true,
+      slidesPerView: "auto",
+      grabCursor: true,
+      centeredSlides: true,
+      speed: 600,
+      autoplay: { delay: 1800, disableOnInteraction: false },
+      creativeEffect: {
+        limitProgress: 1,
+        prev: { opacity: 1, scale: 0.9, rotate: [0, 25, 0], translate: ["-50%", 0, -200] },
+        next: { scale: 0.9, rotate: [0, -25, 0], translate: ["50%", 0, -200] }
+      },
+      pagination: {
+        el: "#atc01 .pager_dot",
+        bulletClass: "bullet",
+        bulletActiveClass: "active",
+        type: "bullets",
+        clickable: true
+      },
+      breakpoints: {
+        768: {
+          creativeEffect: { limitProgress: 2, prev: { opacity: 0 } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -3,6 +3,7 @@
 import { ThemeProvider } from '@/lib/ThemeContext';
 import { ThemeHeader } from './ThemeHeader';
 import { ThemeFooter } from './ThemeFooter';
+import { QuickMenu } from '@/components/ui';
 import { RentCarTheme } from '@/types/theme';
 
 interface ThemeLayoutProps {
@@ -19,6 +20,7 @@ export const ThemeLayout = ({ children, customTheme }: ThemeLayoutProps) => {
           {children}
         </main>
         <ThemeFooter />
+        <QuickMenu />
       </div>
     </ThemeProvider>
   );

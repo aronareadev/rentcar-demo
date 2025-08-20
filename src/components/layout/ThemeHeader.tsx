@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Button } from '@/components/ui';
@@ -38,20 +39,22 @@ export const ThemeHeader = () => {
             className="flex items-center"
             whileHover={{ scale: 1.05 }}
           >
-            <span className="text-xl font-bold text-white">{theme.siteName}</span>
+            <Link href="/" className="text-xl font-bold text-white hover:text-gray-300 transition-colors cursor-pointer">
+              {theme.siteName}
+            </Link>
           </motion.div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
             {theme.header.navigation.map((item) => (
-              <motion.a
-                key={item.title}
-                href={item.link}
-                className="text-white hover:text-gray-300 px-3 py-2 text-sm font-medium transition-colors"
-                whileHover={{ scale: 1.05 }}
-              >
-                {item.title}
-              </motion.a>
+              <motion.div key={item.title} whileHover={{ scale: 1.05 }}>
+                <Link
+                  href={item.link}
+                  className="text-white hover:text-gray-300 px-3 py-2 text-sm font-medium transition-colors"
+                >
+                  {item.title}
+                </Link>
+              </motion.div>
             ))}
           </nav>
 
@@ -88,13 +91,14 @@ export const ThemeHeader = () => {
           >
             <div className="px-2 pt-2 pb-3 space-y-1 border-t border-white/20 bg-black/30">
               {theme.header.navigation.map((item) => (
-                <a
+                <Link
                   key={item.title}
                   href={item.link}
                   className="block px-3 py-2 text-base font-medium text-white hover:text-gray-300 hover:bg-white/10 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   {item.title}
-                </a>
+                </Link>
               ))}
               <div className="pt-4">
                 <a 

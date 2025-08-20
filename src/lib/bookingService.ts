@@ -18,6 +18,7 @@ export interface Booking {
   notes?: string;
   created_at: string;
   updated_at: string;
+  vehicles?: any; // 차량 정보 (조회 시에만 포함)
 }
 
 // 예약 생성 (비회원 지원)
@@ -28,6 +29,9 @@ export const createBooking = async (bookingData: BookingFormData, totalAmount: n
     const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '');
     const randomNum = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
     const reservationNumber = `RENT-${dateStr}-${randomNum}`;
+
+    // 기본 지점 ID (강남점)
+    const defaultLocationId = '929a4095-d63d-4ea8-b865-5ecce51e018e';
 
     // 비회원 예약으로 처리 (customer_id는 null)
     const { data, error } = await supabase
@@ -43,8 +47,10 @@ export const createBooking = async (bookingData: BookingFormData, totalAmount: n
         end_date: bookingData.endDate,
         start_time: bookingData.startTime,
         end_time: bookingData.endTime,
-        pickup_location: '본점', // 기본값
-        return_location: '본점', // 기본값
+        pickup_location_old: '강남점', // 기본값 (구 필드)
+        return_location_old: '강남점', // 기본값 (구 필드)
+        pickup_location_id: defaultLocationId, // 새 필드
+        return_location_id: defaultLocationId, // 새 필드
         total_amount: totalAmount,
         status: 'pending', // 예약 대기중
         payment_status: 'pending', // 결제 대기중 (관리자 확정 후 결제)
@@ -61,19 +67,19 @@ export const createBooking = async (bookingData: BookingFormData, totalAmount: n
     // 반환할 데이터를 우리 인터페이스에 맞게 변환
     return {
       id: data.id,
-      vehicle_id: data.vehicle_id,
-      customer_name: data.guest_name,
-      customer_phone: data.guest_phone,
-      customer_email: data.guest_email,
+      vehicle_id: data.vehicle_id || '',
+      customer_name: data.guest_name || '',
+      customer_phone: data.guest_phone || '',
+      customer_email: data.guest_email || '',
       start_date: data.start_date,
       end_date: data.end_date,
-      start_time: data.start_time,
-      end_time: data.end_time,
-      status: data.status,
+      start_time: data.start_time || '09:00',
+      end_time: data.end_time || '18:00',
+      status: data.status as 'pending' | 'confirmed' | 'cancelled' | 'completed',
       total_amount: data.total_amount,
-      notes: data.notes,
-      created_at: data.created_at,
-      updated_at: data.updated_at,
+      notes: data.notes || '',
+      created_at: data.created_at || '',
+      updated_at: data.updated_at || '',
     };
   } catch (error) {
     console.error('예약 서비스 오류:', error);
@@ -136,19 +142,19 @@ export const getCustomerBookings = async (customerEmail: string): Promise<any[]>
     // 데이터를 우리 인터페이스에 맞게 변환
     return (data || []).map(reservation => ({
       id: reservation.id,
-      vehicle_id: reservation.vehicle_id,
-      customer_name: reservation.guest_name,
-      customer_phone: reservation.guest_phone,
-      customer_email: reservation.guest_email,
+      vehicle_id: reservation.vehicle_id || '',
+      customer_name: reservation.guest_name || '',
+      customer_phone: reservation.guest_phone || '',
+      customer_email: reservation.guest_email || '',
       start_date: reservation.start_date,
       end_date: reservation.end_date,
       start_time: reservation.start_time || '09:00',
       end_time: reservation.end_time || '18:00',
-      status: reservation.status,
+      status: reservation.status as 'pending' | 'confirmed' | 'cancelled' | 'completed',
       total_amount: reservation.total_amount,
-      notes: reservation.notes,
-      created_at: reservation.created_at,
-      updated_at: reservation.updated_at,
+      notes: reservation.notes || '',
+      created_at: reservation.created_at || '',
+      updated_at: reservation.updated_at || '',
       vehicles: reservation.vehicles
     }));
   } catch (error) {
@@ -178,7 +184,23 @@ export const updateBookingStatus = async (
       throw new Error('예약 상태 업데이트에 실패했습니다.');
     }
 
-    return data;
+    // 데이터를 우리 인터페이스에 맞게 변환
+    return {
+      id: data.id,
+      vehicle_id: data.vehicle_id || '',
+      customer_name: data.guest_name || '',
+      customer_phone: data.guest_phone || '',
+      customer_email: data.guest_email || '',
+      start_date: data.start_date,
+      end_date: data.end_date,
+      start_time: data.start_time || '09:00',
+      end_time: data.end_time || '18:00',
+      status: data.status as 'pending' | 'confirmed' | 'cancelled' | 'completed',
+      total_amount: data.total_amount,
+      notes: data.notes || '',
+      created_at: data.created_at || '',
+      updated_at: data.updated_at || '',
+    };
   } catch (error) {
     console.error('예약 상태 서비스 오류:', error);
     throw error;
@@ -214,7 +236,24 @@ export const getBookingById = async (bookingId: string): Promise<Booking | null>
       throw new Error('예약 조회에 실패했습니다.');
     }
 
-    return data;
+    // 데이터를 우리 인터페이스에 맞게 변환
+    return {
+      id: data.id,
+      vehicle_id: data.vehicle_id || '',
+      customer_name: data.guest_name || '',
+      customer_phone: data.guest_phone || '',
+      customer_email: data.guest_email || '',
+      start_date: data.start_date,
+      end_date: data.end_date,
+      start_time: data.start_time || '09:00',
+      end_time: data.end_time || '18:00',
+      status: data.status as 'pending' | 'confirmed' | 'cancelled' | 'completed',
+      total_amount: data.total_amount,
+      notes: data.notes || '',
+      created_at: data.created_at || '',
+      updated_at: data.updated_at || '',
+      vehicles: data.vehicles
+    };
   } catch (error) {
     console.error('예약 조회 서비스 오류:', error);
     throw error;

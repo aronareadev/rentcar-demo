@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeLayout } from '@/components/layout/ThemeLayout';
 import { SubPageHeader } from '@/components/layout/SubPageHeader';
@@ -14,6 +15,7 @@ import { BookingSuccessModal } from '@/components/booking/BookingSuccessModal';
 import { Booking } from '@/lib/bookingService';
 
 export default function VehiclesPage() {
+  const searchParams = useSearchParams();
   const [vehicles, setVehicles] = useState<VehicleWithBrand[]>([]);
   const [categories, setCategories] = useState<string[]>(['전체']);
   const [locations, setLocations] = useState<any[]>([]);
@@ -86,6 +88,19 @@ export default function VehiclesPage() {
 
     loadData();
   }, []);
+
+  // URL 파라미터에서 필터 설정
+  useEffect(() => {
+    const category = searchParams?.get('category');
+    const location = searchParams?.get('location');
+    
+    if (category) {
+      setActiveCategory(category);
+    }
+    if (location) {
+      setActiveLocation(location);
+    }
+  }, [searchParams]);
 
   // 필터링된 차량 목록
   const filteredVehicles = vehicles.filter(vehicle => {
@@ -349,7 +364,7 @@ export default function VehiclesPage() {
                       
                       {/* 지역 */}
                       <div>
-                        <label className="block text-xs font-medium text-gray-700 mb-2">지역</label>
+                        <label className="block text-xs font-medium text-gray-700 mb-2">렌트가 지점</label>
                         <select 
                           value={activeLocation}
                           onChange={(e) => setActiveLocation(e.target.value)}
