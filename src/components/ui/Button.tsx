@@ -30,14 +30,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const classes = `${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`;
 
     return (
-      <motion.button
-        ref={ref}
-        className={classes}
-        disabled={loading}
+      <motion.div
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        {...props}
       >
+        <button
+          ref={ref}
+          className={classes}
+          disabled={loading}
+          {...props}
+        >
         {loading ? (
           <div className="flex items-center">
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
@@ -46,7 +48,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ) : (
           children
         )}
-      </motion.button>
+        </button>
+      </motion.div>
     );
   }
 );

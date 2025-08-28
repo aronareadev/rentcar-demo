@@ -27,8 +27,12 @@ export const HeroSection = () => {
         // 카테고리 데이터 로드
         try {
           const categoriesData = await getVehicleCategories();
-          const categoryNames = categoriesData.map(cat => cat.name);
-          setCategories(categoryNames);
+          if (categoriesData && categoriesData.length > 0) {
+            const categoryNames = categoriesData.map(cat => cat.name);
+            setCategories(categoryNames);
+          } else {
+            setCategories(['SUV', '경차', '대형세단', '소형', '승합차', '전기차', '중형세단']);
+          }
         } catch (error) {
           console.warn('카테고리 로드 실패, 기본값 사용:', error);
           setCategories(['SUV', '경차', '대형세단', '소형', '승합차', '전기차', '중형세단']);
@@ -37,8 +41,12 @@ export const HeroSection = () => {
         // 지역 데이터 로드
         try {
           const locationsData = await getVehicleLocations();
-          const locationNames = locationsData.map(loc => loc.name);
-          setLocations(locationNames);
+          if (locationsData && locationsData.length > 0) {
+            const locationNames = locationsData.map(loc => loc.name);
+            setLocations(locationNames);
+          } else {
+            setLocations(['강남점', '본점', '부산점', '대구점', '홍대점']);
+          }
         } catch (error) {
           console.warn('지역 로드 실패, 기본값 사용:', error);
           setLocations(['강남점', '본점', '부산점', '대구점', '홍대점']);
@@ -193,7 +201,7 @@ export const HeroSection = () => {
                 ))}
                 <div className="flex items-end">
                   <button 
-                    className="w-full py-3 text-lg font-semibold bg-primary hover:bg-primary/90 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-3 text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={handleSearch}
                     disabled={loading}
                   >

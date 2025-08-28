@@ -42,17 +42,17 @@ export const FeaturesSection = () => {
     {
       title: "24시간 예약",
       description: "언제든지 편리한 온라인 예약\n24시간 실시간 예약 서비스",
-      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop"
+      image: "/img/home/features/fea-1.jpg"
     },
     {
       title: "차량 관리",
       description: "정기적인 점검과 관리로\n안전하고 깨끗한 차량 제공",
-      image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&h=700&fit=crop"
+      image: "/img/home/features/fea-2.jpg"
     },
     {
       title: "안전 보장",
       description: "종합보험 가입과 전문적인\n사후 서비스로 안심 렌트",
-      image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=800&h=600&fit=crop"
+      image: "/img/home/features/fea-3.jpg"
     }
   ];
 
@@ -79,13 +79,8 @@ export const FeaturesSection = () => {
         
         .tit {
           font-size: 52px;
-          color: #222;
           font-weight: 700;
           margin-bottom: 20px;
-        }
-        
-        .tit span {
-          color: #007BFF;
         }
         
         .txt {
@@ -213,13 +208,13 @@ export const FeaturesSection = () => {
         .bg-box {
           width: 100%;
           height: 30vh;
-          background: linear-gradient(90deg, #007BFF 48%, #ffffff 94%);
+          background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 48%, #2563eb 75%, #ffffff 94%);
         }
       `}</style>
       
       <section ref={sectionRef} className="features-section">
         <div className="tit-area">
-          <p className="tit">Premium <span>RentCar</span></p>
+          <p className="tit gradient-text-blue">Premium <span>RentCar</span></p>
           <p className="txt">믿을 수 있는 전문 렌트카 서비스로{'\n'}안전하고 편리한 차량 이용을 약속드립니다.</p>
         </div>
         

@@ -1,5 +1,19 @@
 import { supabase } from './supabase';
 
+// Helper function to convert database data to TypeScript compatible format
+const convertToConsultation = (item: any): Consultation => ({
+  ...item,
+  type: item.type || undefined,
+  admin_memo: item.admin_memo || undefined,
+  rental_start_date: item.rental_start_date || undefined,
+  rental_end_date: item.rental_end_date || undefined,
+  preferred_vehicle: item.preferred_vehicle || undefined,
+  status: item.status || 'pending',
+  priority: item.priority || 'normal',
+  created_at: item.created_at || new Date().toISOString(),
+  updated_at: item.updated_at || new Date().toISOString(),
+});
+
 export interface Consultation {
   id: string;
   consultation_number: string;
@@ -50,7 +64,8 @@ export const consultationService = {
       .single();
 
     if (error) throw error;
-    return consultation;
+    
+    return convertToConsultation(consultation);
   },
 
   // 모든 상담 조회 (관리자용)
@@ -61,7 +76,8 @@ export const consultationService = {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data || [];
+    
+    return (data || []).map(convertToConsultation);
   },
 
   // 읽지 않은 상담 조회
@@ -73,7 +89,8 @@ export const consultationService = {
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data || [];
+    
+    return (data || []).map(convertToConsultation);
   },
 
   // 상담 읽음 처리
@@ -113,7 +130,7 @@ export const consultationService = {
       if (error.code === 'PGRST116') return null;
       throw error;
     }
-    return data;
+    return data ? convertToConsultation(data) : null;
   },
 
   // 상담 삭제

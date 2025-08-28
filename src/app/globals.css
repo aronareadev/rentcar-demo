@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../styles/common.css";
 
 /* WantedSans Font Faces */
 @font-face {

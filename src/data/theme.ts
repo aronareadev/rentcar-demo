@@ -140,7 +140,7 @@ export const rentCarTheme: RentCarTheme = {
     ]
   },
   "reviewSection": {
-    "title": "SAMPLE RENTCAR REVIEW",
+    "title": "EVER RENTCAR REVIEW",
     "subtitle": "고객들의 생생한 이용 후기를 확인하세요",
     "reviewImages": [
       "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=300&h=200&fit=crop",

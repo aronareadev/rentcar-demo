@@ -169,46 +169,122 @@ export const checkVehicleAvailability = async (
 // 차량 카테고리 목록 조회
 export const getVehicleCategories = async () => {
   try {
+    // 테이블 존재 여부 먼저 확인
     const { data, error } = await supabase
       .from('vehicle_categories')
-      .select('*')
+      .select('id, name')
+      .limit(1);
+
+    if (error) {
+      console.warn('vehicle_categories 테이블이 존재하지 않거나 접근할 수 없습니다:', error.message);
+      // 기본 카테고리 반환
+      return [
+        { name: '경차', id: '1' },
+        { name: '소형', id: '2' }, 
+        { name: '중형세단', id: '3' },
+        { name: 'SUV', id: '4' },
+        { name: '승합차', id: '5' },
+        { name: '전기차', id: '6' }
+      ];
+    }
+
+    // 실제 데이터 조회
+    const { data: categories, error: queryError } = await supabase
+      .from('vehicle_categories')
+      .select('id, name, description, base_daily_rate, price_multiplier')
       .eq('is_active', true)
       .order('name');
 
-    if (error) {
-      console.error('카테고리 조회 오류:', error);
-      // 카테고리 테이블이 없을 수 있으므로 기본값 반환
-      return [];
+    if (queryError) {
+      console.warn('카테고리 조회 중 오류:', queryError.message);
+      return [
+        { name: '경차', id: '1' },
+        { name: '소형', id: '2' }, 
+        { name: '중형세단', id: '3' },
+        { name: 'SUV', id: '4' },
+        { name: '승합차', id: '5' },
+        { name: '전기차', id: '6' }
+      ];
     }
 
-    return data || [];
+    return categories && categories.length > 0 ? categories : [
+      { name: '경차', id: '1' },
+      { name: '소형', id: '2' }, 
+      { name: '중형세단', id: '3' },
+      { name: 'SUV', id: '4' },
+      { name: '승합차', id: '5' },
+      { name: '전기차', id: '6' }
+    ];
+
   } catch (error) {
-    console.error('카테고리 조회 실패:', error);
-    // 오류 발생 시 기본 카테고리 반환
-    return [];
+    console.warn('카테고리 조회 실패, 기본값 사용:', error);
+    return [
+      { name: '경차', id: '1' },
+      { name: '소형', id: '2' }, 
+      { name: '중형세단', id: '3' },
+      { name: 'SUV', id: '4' },
+      { name: '승합차', id: '5' },
+      { name: '전기차', id: '6' }
+    ];
   }
 };
 
 // 차량 위치 목록 조회
 export const getVehicleLocations = async () => {
   try {
+    // 테이블 존재 여부 먼저 확인
     const { data, error } = await supabase
       .from('vehicle_locations')
-      .select('*')
+      .select('id, name')
+      .limit(1);
+
+    if (error) {
+      console.warn('vehicle_locations 테이블이 존재하지 않거나 접근할 수 없습니다:', error.message);
+      // 기본 지역 반환
+      return [
+        { name: '강남점', id: '1' },
+        { name: '본점', id: '2' },
+        { name: '부산점', id: '3' },
+        { name: '대구점', id: '4' },
+        { name: '홍대점', id: '5' }
+      ];
+    }
+
+    // 실제 데이터 조회
+    const { data: locations, error: queryError } = await supabase
+      .from('vehicle_locations')
+      .select('id, name, address, manager_name, manager_phone')
       .eq('is_active', true)
       .order('name');
 
-    if (error) {
-      console.error('위치 조회 오류:', error);
-      // 위치 테이블이 없을 수 있으므로 기본값 반환
-      return [];
+    if (queryError) {
+      console.warn('위치 조회 중 오류:', queryError.message);
+      return [
+        { name: '강남점', id: '1' },
+        { name: '본점', id: '2' },
+        { name: '부산점', id: '3' },
+        { name: '대구점', id: '4' },
+        { name: '홍대점', id: '5' }
+      ];
     }
 
-    return data || [];
+    return locations && locations.length > 0 ? locations : [
+      { name: '강남점', id: '1' },
+      { name: '본점', id: '2' },
+      { name: '부산점', id: '3' },
+      { name: '대구점', id: '4' },
+      { name: '홍대점', id: '5' }
+    ];
+
   } catch (error) {
-    console.error('위치 조회 실패:', error);
-    // 오류 발생 시 빈 배열 반환
-    return [];
+    console.warn('위치 조회 실패, 기본값 사용:', error);
+    return [
+      { name: '강남점', id: '1' },
+      { name: '본점', id: '2' },
+      { name: '부산점', id: '3' },
+      { name: '대구점', id: '4' },
+      { name: '홍대점', id: '5' }
+    ];
   }
 };
 
